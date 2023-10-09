@@ -4,7 +4,7 @@ my nix-config
 [![CI Home](https://github.com/harryprayiv/nix-config/workflows/Home/badge.svg)](https://github.com/harryprayiv/nix-config/actions)
 [![CI System](https://github.com/harryprayiv/nix-config/workflows/NixOS/badge.svg)](https://github.com/harryprayiv/nix-config/actions)
 
-My current evolving NixOS dev environment with full configuration files, home-manager, neovim, etc. 
+My current evolving Darwin dev environment with full configuration files, home-manager, neovim, etc. 
 
 ## Programs
 
