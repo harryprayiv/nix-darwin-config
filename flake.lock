@@ -1,0 +1,121 @@
+{
+  "nodes": {
+    "darwin": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1696360011,
+        "narHash": "sha256-HpPv27qMuPou4acXcZ8Klm7Zt0Elv9dgDvSJaomWb9Y=",
+        "owner": "lnl7",
+        "repo": "nix-darwin",
+        "rev": "8b6ea26d5d2e8359d06278364f41fbc4b903b28a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lnl7",
+        "ref": "master",
+        "repo": "nix-darwin",
+        "type": "github"
+      }
+    },
+    "fish-bobthefish-theme": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1640180970,
+        "narHash": "sha256-9uuM5fwWl98uDrTHet4MdVpRZYLIQfW0HOfTxGb2o5o=",
+        "owner": "harryprayiv",
+        "repo": "theme-bobthefish",
+        "rev": "e4418e8a7de9fbd6b5053a9b9009aa84a48398cd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "harryprayiv",
+        "repo": "theme-bobthefish",
+        "type": "github"
+      }
+    },
+    "fish-keytool-completions": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1638013450,
+        "narHash": "sha256-eX9Pg9VcCnx8ofjJcItyf2AFBU90MUgqdpKb+Kv5ARU=",
+        "owner": "ckipp01",
+        "repo": "keytool-fish-completions",
+        "rev": "dcb24bae7b8437e1e1210b00b7172841a26d6573",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ckipp01",
+        "repo": "keytool-fish-completions",
+        "type": "github"
+      }
+    },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1696737557,
+        "narHash": "sha256-YD/pjDjj/BNmisEvRdM/vspkCU3xyyeGVAUWhvVSi5Y=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "3c1d8758ac3f55ab96dcaf4d271c39da4b6e836d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1659446231,
+        "narHash": "sha256-hekabNdTdgR/iLsgce5TGWmfIDZ86qjPhxDg/8TlzhE=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "eabc38219184cc3e04a974fe31857d8e0eac098d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixpkgs-21.11-darwin",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs-unstable": {
+      "locked": {
+        "lastModified": 1696725822,
+        "narHash": "sha256-B7uAOS7TkLlOg1aX01rQlYbydcyB6ZnLJSfaYbKVww8=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5aabb5780a11c500981993d49ee93cfa6df9307b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "darwin": "darwin",
+        "fish-bobthefish-theme": "fish-bobthefish-theme",
+        "fish-keytool-completions": "fish-keytool-completions",
+        "home-manager": "home-manager",
+        "nixpkgs": "nixpkgs",
+        "nixpkgs-unstable": "nixpkgs-unstable"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

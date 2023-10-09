@@ -1,0 +1,282 @@
+#! /usr/bin/env bash
+
+# Shows the output of every command
+set +x
+
+activateHM() {
+  #rm ~/.config/orage/oragerc.bak
+  rm -rf ~/.config/secrets
+  HOME_MANAGER_BACKUP_EXT=bak result/activate
+  #hm-changes-report
+}
+
+rebuild_home_lvm() {
+  nix build .#homeConfigurations.vm-home.activationPackage --show-trace --impure
+  activateHM
+}
+
+rebuild_home_edp() {
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --show-trace --impure
+  activateHM
+}
+
+eval_home_edp() {
+  nix eval --raw .#homeConfigurations.bismuth-edp.activationPackage --impure
+}
+
+eval_traced_home_edp() {
+  nix eval --raw .#homeConfigurations.bismuth-edp.activationPackage --show-trace --impure
+}
+
+rebuild_home_uhd() {
+  nix build .#homeConfigurations.bismuth-uhd.activationPackage
+  activateHM
+}
+
+
+eval_home_uhd() {
+  nix eval --raw .#homeConfigurations.bismuth-uhd.activationPackage --impure
+}
+
+eval_traced_home_uhd() {
+  nix eval --raw .#homeConfigurations.bismuth-uhd.activationPackage --show-trace --impure
+}
+
+rebuild_system() {
+  #nix build .#nixosConfigurations.intelTower.config.system.build.toplevel
+  #sudo result/bin/switch-to-configuration switch
+  sudo nixos-rebuild switch --flake .#intelTower --impure
+}
+
+rebuild_intelTower() {
+  sudo nixos-rebuild switch --flake .#intelTower --impure 
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --impure
+  activateHM 
+}
+
+rebuild_intelTower_withUpdate() {
+  # ./home/scripts/pullrelease.sh
+  nix flake update 
+  sudo nixos-rebuild switch --flake .#intelTower --impure --show-trace
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --impure --show-trace 
+  activateHM 
+}
+
+rebuild_macbook() {
+  nix build .#darwinConfigurations.macbook.system --show-trace --impure
+  ./result/sw/bin/darwin-rebuild switch --flake .
+  defaults delete com.amethyst.Amethyst.plist
+}
+
+eval_intelTower() {
+  nix eval --raw .#intelTower --impure
+}
+
+# was necessary to purge substitutes caches (saving for future use) 
+rebuild_scratchBuild() {
+  nix flake update 
+  sudo nixos-rebuild switch --flake .#intelTower --impure --option build-use-substitutes false --show-trace
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --option build-use-substitutes false --show-trace
+  activateHM
+}
+
+rebuild_intelNUC() {
+  sudo nixos-rebuild switch --flake .#intelNUC --impure
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --show-trace
+  activateHM
+}
+
+rebuild_intelNUC_withUpdate() {
+  nix flake update 
+  sudo nixos-rebuild switch --flake .#intelNUC --impure
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --show-trace
+  activateHM
+}
+
+rebuild_vm() {
+  sudo nixos-rebuild build-vm --flake .#intelTower --impure
+}
+
+restart_X() {
+  echo "⚠️ Restarting X11 (requires authentication) ⚠️"
+  systemctl restart display-manager
+}
+
+collect_ALL_garbage() {
+  sudo nix-collect-garbage -d
+  nix-collect-garbage -d
+  sudo nix-store --gc
+  echo ""
+  echo "Your royal file system is clean."
+}
+
+PS3='Please enter your choice: '
+
+options=("Rebuild Home (LVM)" 
+        "Rebuild Home (EDP)" 
+        "Evaluate Home (EDP)" 
+        "Evaluate Home (EDP) with trace" 
+        "Rebuild Home (UHD)" 
+        "Evaluate Home (UHD)" 
+        "Evaluate Home (UHD) with trace" 
+        "Restart X11" 
+        "Update fish" 
+        "Rebuild System" 
+        "Rebuild IntelTower" 
+        "Rebuild IntelTower with update"
+        "Rebuild Macbook"  
+        "Evaluate IntelTower"
+        "Rebuild IntelNUC" 
+        "Rebuild IntelNUC with update" 
+        "Rebuild Scratch Build" 
+        "Collect All Garbage" 
+        "Rebuild VM" 
+        "Quit")
+
+case $1 in
+  "lvm")
+    rebuild_home_lvm;;
+  "edp")
+    rebuild_home_edp;;
+  "edpEval")
+    eval_home_edp;;
+  "edptEval")
+    eval_traced_home_edp;;
+  "uhd")
+    rebuild_home_uhd;;
+  "uhdEval")
+    eval_home_uhd;;
+  "uhdtEval")
+    eval_traced_home_uhd;;
+  "restart-x")
+    restart_X;;
+  "update-fish")
+    fish -c fish_update_completions;;
+  "system")
+    rebuild_system;;  
+  "intelTower")
+    rebuild_intelTower;;
+  "intelTowerFULL")
+    rebuild_intelTower_withUpdate;;
+  "macbook")
+    rebuild_macbook;;
+  "intelTowerEval")
+    eval_intelTower;;
+  "intelNUC")
+    rebuild_intelNUC;;
+  "intelNUCFULL")  
+    rebuild_intelNUC_withUpdate;;
+  "scratchBuild")
+    rebuild_scratchBuild;;
+  "trashPanda")
+    collect_ALL_garbage;;
+  "vm")
+    rebuild_vm;;
+  *)
+    echo "expected 'lvm/edp/edpEval/edptEval' , 'uhd/uhdEval/udhtEval' , 'intelTower/intelTowerFULL/intelTowerEval/scratchBuild' , 'intelNUC/intelNUCFULL' , 'trashPanda' , , 'restart-x', 'update-fish', 'system' , or 'vm'";;
+esac
+
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Rebuild Home (LVM)")
+            echo "Rebuilding Home (LVM)..."
+            rebuild_home_lvm
+            break
+            ;;
+        "Rebuild Home (EDP)")
+            echo "Rebuilding Home (EDP)..."
+            rebuild_home_edp
+            break
+            ;;
+        "Evaluate Home (EDP)")
+            echo "Evaluating Home (EDP)..."
+            eval_home_edp
+            break
+            ;;
+        "Evaluate Home (EDP) with trace")
+            echo "Evaluating Home (EDP) with trace..."
+            eval_traced_home_edp
+            break
+            ;;
+        "Rebuild Home (UHD)")
+            echo "Rebuilding Home (UHD)..."
+            rebuild_home_uhd
+            break
+            ;;
+        "Evaluate Home (UHD)")
+            echo "Evaluating Home (UHD)..."
+            eval_home_uhd
+            break
+            ;;
+        "Evaluate Home (UHD) with trace")
+            echo "Evaluating Home (UHD) with trace..."
+            eval_traced_home_uhd
+            break
+            ;;
+        "Restart X11")
+            echo "Restarting X11..."
+            restart_X
+            break
+            ;;
+        "Update fish")
+            echo "Updating fish..."
+            fish -c fish_update_completions
+            break
+            ;;
+        "Rebuild System")
+            echo "Rebuilding System..."
+            rebuild_system
+            break
+            ;;
+        "Rebuild IntelTower")
+            echo "Rebuilding IntelTower..."
+            rebuild_intelTower
+            break
+            ;;
+        "Rebuild IntelTower with update")
+            echo "Rebuilding IntelTower with update..."
+            rebuild_intelTower_withUpdate
+            break
+            ;;
+        "Rebuild Macbook")
+            echo "Rebuilding Macbook..."
+            rebuild_macbook
+            break
+            ;;
+        "Evaluate IntelTower")
+            echo "Evaluating IntelTower..."
+            eval_intelTower
+            break
+            ;;
+        "Rebuild IntelNUC")
+            echo "Rebuilding IntelNUC..."
+            rebuild_intelNUC
+            break
+            ;;
+        "Rebuild IntelNUC with update")
+            echo "Rebuilding IntelNUC with update..."
+            rebuild_intelNUC_withUpdate
+            break
+            ;;
+        "Rebuild Scratch Build")
+            echo "Rebuilding Scratch Build..."
+            rebuild_scratchBuild
+            break
+            ;;
+        "Collect All Garbage")
+            echo "Collecting All Garbage..."
+            collect_ALL_garbage
+            break
+            ;;
+        "Rebuild VM")
+            echo "Rebuilding VM..."
+            rebuild_vm
+            break
+            ;;
+        "Quit")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done

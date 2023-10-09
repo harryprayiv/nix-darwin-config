@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1000"
+   height="1000"
+   viewBox="0 0 264.58333 264.58333"
+   version="1.1"
+   id="svg1858"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="plutusBasic.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1860"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.27433372"
+     inkscape:cx="-563.18268"
+     inkscape:cy="566.82787"
+     inkscape:window-width="1908"
+     inkscape:window-height="1008"
+     inkscape:window-x="6"
+     inkscape:window-y="36"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1855" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       d="M 40.403062,38.416034 224.89583,39.148336 224.17999,226.1673 106.13153,225.69832 V 107.1143 h 49.45762 v 48.22346 h -30.33477 v 48.87185 h 80.78433 V 58.015985 H 56.602334 V 73.909079 H 191.287 V 188.3166 h -52.18537 v -17.08553 h 32.3807 V 91.221279 H 56.602334 V 225.50196 l -16.91483,-0.0669 z M 141.14769,124.54346 h -15.89331 v 15.89293 h 15.89331 z M 90.238353,107.1143 h -17.74294 v 118.45081 l 17.74294,0.0705 z"
+       fill="#000000"
+       id="path1920"
+       style="display:inline;stroke-width:0.211912"
+       inkscape:label="plutus logo" />
+  </g>
+</svg>

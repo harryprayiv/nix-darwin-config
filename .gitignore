@@ -1,0 +1,10 @@
+nixos/home/result
+result
+generated-plutus-scripts
+.vscode/
+.vscode/settings.json
+.direnv/
+.unisonHistory
+*.qcow2
+flake.nix.bak
+.DS_Store

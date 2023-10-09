@@ -1,0 +1,193 @@
+#!/usr/bin/env bash
+
+# Functions
+
+activateHM() {
+  rm -rf ~/.config/secrets
+  HOME_MANAGER_BACKUP_EXT=bak result/activate
+}
+
+rebuild_home_lvm() {
+  nix build .#homeConfigurations.vm-home.activationPackage --show-trace --impure
+  activateHM
+}
+
+rebuild_home_edp() {
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --show-trace --impure
+  activateHM
+}
+
+eval_home_edp() {
+  nix eval --raw .#homeConfigurations.bismuth-edp.activationPackage --impure
+}
+
+eval_traced_home_edp() {
+  nix eval --raw .#homeConfigurations.bismuth-edp.activationPackage --show-trace --impure
+}
+
+rebuild_home_uhd() {
+  nix build .#homeConfigurations.bismuth-uhd.activationPackage
+  activateHM
+}
+
+eval_home_uhd() {
+  nix eval --raw .#homeConfigurations.bismuth-uhd.activationPackage --impure
+}
+
+eval_traced_home_uhd() {
+  nix eval --raw .#homeConfigurations.bismuth-uhd.activationPackage --show-trace --impure
+}
+
+rebuild_system() {
+  sudo nixos-rebuild switch --flake .#intelTower --impure
+}
+
+rebuild_intelTower() {
+  sudo nixos-rebuild switch --flake .#intelTower --impure --show-trace 
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --impure
+  activateHM 
+}
+
+rebuild_intelTower_withUpdate() {
+  ./home/scripts/pullrelease.sh
+  nix flake update 
+  sudo nixos-rebuild switch --flake .#intelTower --impure --show-trace
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --impure --show-trace 
+  activateHM 
+}
+
+eval_intelTower() {
+  nix eval --raw .#intelTower --impure
+}
+
+rebuild_intelNUC() {
+  sudo nixos-rebuild switch --flake .#intelNUC --impure
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --show-trace
+  activateHM
+}
+
+rebuild_intelNUC_withUpdate() {
+  nix flake update 
+  sudo nixos-rebuild switch --flake .#intelNUC --impure
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --show-trace
+  activateHM
+}
+
+rebuild_vm() {
+  sudo nixos-rebuild build-vm --flake .#intelTower --impure
+}
+
+restart_X() {
+  echo "⚠️ Restarting X11 (requires authentication) ⚠️"
+  systemctl restart display-manager
+}
+
+collect_ALL_garbage() {
+  sudo nix-collect-garbage -d
+  nix-collect-garbage -d
+  sudo nix-store --gc
+  echo ""
+  echo "Your royal file system is clean."
+}
+
+# Main script
+
+HEIGHT=22
+WIDTH=60
+CHOICE_HEIGHT=16
+BACKTITLE="NixOS Configuration and Management"
+TITLE="Menu"
+MENU="Choose an option:"
+
+OPTIONS=("Rebuild Home (LVM)" "" \
+         "Rebuild Home (EDP)" "" \
+         "Evaluate Home (EDP)" "" \
+         "Evaluate Home (EDP) with trace" "" \
+         "Rebuild Home (UHD)" "" \
+         "Evaluate Home (UHD)" "" \
+         "Evaluate Home (UHD) with trace" "" \
+         "Restart X11" "" \
+         "Update fish" "" \
+         "Rebuild System" "" \
+         "Rebuild IntelTower" "" \
+         "Rebuild IntelTower with update" "" \
+         "Evaluate IntelTower" "" \
+         "Rebuild IntelNUC" "" \
+         "Rebuild IntelNUC with update" "" \
+         "Rebuild Scratch Build" "" \
+         "Collect All Garbage" "" \
+         "Rebuild VM" "")
+
+while true; do
+  CHOICE=$(dialog --clear \
+                  --backtitle "$BACKTITLE" \
+                  --title "$TITLE" \
+                  --menu "$MENU" \
+                  $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                  "${OPTIONS[@]}" \
+                  2>&1 >/dev/tty)
+
+  clear
+
+  case $CHOICE in
+    "Rebuild Home (LVM)")
+      rebuild_home_lvm
+      ;;
+    "Rebuild Home (EDP)")
+      rebuild_home_edp
+      ;;
+    "Evaluate Home (EDP)")
+      eval_home_edp
+      ;;
+    "Evaluate Home (EDP) with trace")
+      eval_traced_home_edp
+      ;;
+    "Rebuild Home (UHD)")
+      rebuild_home_uhd
+      ;;
+    "Evaluate Home (UHD)")
+      eval_home_uhd
+      ;;
+    "Evaluate Home (UHD) with trace")
+      eval_traced_home_uhd
+      ;;
+    "Restart X11")
+      restart_X
+      ;;
+    "Update fish")
+      fish -c fish_update_completions
+      ;;
+    "Rebuild System")
+      rebuild_system
+      ;;
+    "Rebuild IntelTower")
+      rebuild_intelTower
+      ;;
+    "Rebuild IntelTower with update")
+      rebuild_intelTower_withUpdate
+      ;;
+    "Evaluate IntelTower")
+      eval_intelTower
+      ;;
+    "Rebuild IntelNUC")
+      rebuild_intelNUC
+      ;;
+    "Rebuild IntelNUC with update")
+      rebuild_intelNUC_withUpdate
+      ;;
+    "Rebuild Scratch Build")
+      rebuild_scratchBuild
+      ;;
+    "Collect All Garbage")
+      collect_ALL_garbage
+      ;;
+    "Rebuild VM")
+      rebuild_vm
+      ;;
+  *)
+    echo "Invalid option. Exiting."
+    exit 1
+    ;;
+  esac
+
+done

@@ -1,0 +1,96 @@
+[
+  {
+    "title": "Main",
+    "links": [
+      {
+        "label": "Reddit",
+        "value": "https://old.reddit.com/"
+      },
+      {
+        "label": "GitHub",
+        "value": "https://github.com/harryprayiv?tab=repositories"
+      },
+      {
+        "label": "TapTools",
+        "value": "https://taptools.io/"
+      },
+      {
+        "label": "Plutus",
+        "value": "https://github.com/input-output-hk/haskell-course"
+      },
+      {
+        "label": "Haskell",
+        "value": "https://old.reddit.com/r/haskell/"
+      },
+      {
+        "label": "r/Cardano",
+        "value": "https://old.reddit.com/r/Cardano/"
+      }
+    ]
+  },
+  {
+    "title": "Engineering",
+    "links": [
+      {
+        "label": "Hackaday",
+        "value": "https://hackaday.com/"
+      },
+      {
+        "label": "Affinity - YT",
+        "value": "https://www.youtube.com/c/AffinityRevolution/playlists"
+      },
+      {
+        "label": "r/Cardano",
+        "value": "https://old.reddit.com/r/Cardano/"
+      }
+    ]
+  },
+  {
+    "title": "Arts",
+    "links": [
+      {
+        "label": "Reddit",
+        "value": "https://old.reddit.com/"
+      },
+      {
+        "label": "GitHub",
+        "value": "https://github.com/harryprayiv?tab=repositories"
+      },
+      {
+        "label": "TapTools",
+        "value": "https://taptools.io/"
+      },
+      {
+        "label": "Plutus",
+        "value": "https://old.reddit.com/r/haskell/"
+      },
+      {
+        "label": "Haskell",
+        "value": "https://github.com/input-output-hk/haskell-course"
+      },
+      {
+        "label": "Img to Svg Converter",
+        "value": "https://picsvg.com/"
+      },
+      {
+        "label": "Affinity",
+        "value": "https://affinity.serif.com/en-us/tutorials/designer/desktop/"
+      },
+      {
+        "label": "Affinity - YT",
+        "value": "https://www.youtube.com/c/AffinityRevolution/playlists"
+      },
+      {
+        "label": "r/Cardano",
+        "value": "https://old.reddit.com/r/Cardano/"
+      }
+    ]
+  }
+]
+
+
+
+BG: 25211B
+default: A2743F
+accent: 6C99B8
+accent 2: 889C51

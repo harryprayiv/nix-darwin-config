@@ -1,0 +1,66 @@
+#! /usr/bin/env bash
+
+# Shows the output of every command
+set +x
+
+pre_home() {
+  echo "Creating config / cache directories..."
+
+  # Polybar logs
+  mkdir -p $HOME/.config/polybar/logs
+  touch $HOME/.config/polybar/logs/bottom.log
+  touch $HOME/.config/polybar/logs/top.log
+
+  # FZF cache
+  mkdir -p $HOME/.cache/fzf-hoogle
+  touch $HOME/.cache/fzf-hoogle/cache.json
+
+  # Desktop pic
+  mkdir -p $HOME/Pictures/
+  cp imgs/longboat01_yanoi_plutus.JPG $HOME/Pictures/  
+}
+
+post_home() {
+  # Set user's profile picture for Gnome3
+  echo "Setting profile picture for the accounts service"
+  sudo cp imgs/intelTower.png /var/lib/AccountsService/icons/bismuth
+  sudo echo "Icon=/var/lib/AccountsService/icons/bismuth" >> /var/lib/AccountsService/users/bismuth
+
+  # Set screenlock wallpaper
+  echo "Setting screen-lock wallpaper"
+  betterlockscreen -u imgs/longboat01_yanoi_plutus.JPG
+}
+
+build_ci_home() {
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --impure --show-trace
+}
+
+build_ci_system() {
+  nix build .#nixosConfigurations.intelTower.config.system.build.toplevel --impure --show-trace
+  nix build .#nixosConfigurations.intelNUC.config.system.build.toplevel --impure --show-trace
+  nix build .#nixosConfigurations.plutus_vm.config.system.build.toplevel --impure --show-trace
+}
+
+fresh_install() {
+  nix-shell -p cachix --command '
+    ./switch system
+    ./build pre-home
+    ./switch home
+    ./build post-home
+  '
+}
+
+case $1 in
+  "ci-home")
+    build_ci_home;;
+  "ci-system")
+    build_ci_system;;
+  "fresh-install")
+    fresh_install;;
+  "pre-home")
+    pre_home;;
+  "post-home")
+    post_home;;
+  *)
+    echo "Invalid option. Expected 'ci-home', 'ci-system', 'pre_home', 'post_home' or 'fresh-install'";;
+esac

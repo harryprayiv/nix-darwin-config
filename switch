@@ -1,0 +1,153 @@
+#! /usr/bin/env bash
+
+# Shows the output of every command
+set +x
+
+activateHM() {
+  #rm ~/.config/orage/oragerc.bak
+  rm -rf ~/.config/secrets
+  HOME_MANAGER_BACKUP_EXT=bak result/activate
+  #hm-changes-report
+}
+
+rebuild_home_lvm() {
+  nix build .#homeConfigurations.vm-home.activationPackage --show-trace --impure
+  activateHM
+}
+
+rebuild_home_edp() {
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --show-trace --impure
+  activateHM
+}
+
+eval_home_edp() {
+  nix eval --raw .#homeConfigurations.bismuth-edp.activationPackage --impure
+}
+
+eval_traced_home_edp() {
+  nix eval --raw .#homeConfigurations.bismuth-edp.activationPackage --show-trace --impure
+}
+
+rebuild_home_uhd() {
+  nix build .#homeConfigurations.bismuth-uhd.activationPackage
+  activateHM
+}
+
+eval_home_uhd() {
+  nix eval --raw .#homeConfigurations.bismuth-uhd.activationPackage --impure
+}
+
+eval_traced_home_uhd() {
+  nix eval --raw .#homeConfigurations.bismuth-uhd.activationPackage --show-trace --impure
+}
+
+rebuild_system() {
+  #nix build .#nixosConfigurations.intelTower.config.system.build.toplevel
+  #sudo result/bin/switch-to-configuration switch
+  sudo nixos-rebuild switch --flake .#intelTower --impure
+}
+
+rebuild_intelTower() {
+  sudo nixos-rebuild switch --flake .#intelTower --impure --show-trace 
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --impure
+  activateHM 
+}
+
+rebuild_intelTower_withUpdate() {
+  ./home/scripts/pullrelease.sh
+  nix flake update 
+  sudo nixos-rebuild switch --flake .#intelTower --impure --show-trace
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --impure --show-trace 
+  activateHM 
+}
+
+rebuild_macbook() {
+  nix build .#darwinConfigurations.macbook.system --show-trace --impure
+  ./result/sw/bin/darwin-rebuild switch --flake .
+}
+
+eval_intelTower() {
+  nix eval --raw .#intelTower --impure
+}
+
+# was necessary to purge substitutes caches (saving for future use) 
+rebuild_scratchBuild() {
+  nix flake update 
+  sudo nixos-rebuild switch --flake .#intelTower --impure --option build-use-substitutes false --show-trace
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --option build-use-substitutes false --show-trace
+  activateHM
+}
+
+rebuild_intelNUC() {
+  sudo nixos-rebuild switch --flake .#intelNUC --impure
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --show-trace
+  activateHM
+}
+
+rebuild_intelNUC_withUpdate() {
+  nix flake update 
+  sudo nixos-rebuild switch --flake .#intelNUC --impure
+  nix build .#homeConfigurations.bismuth-edp.activationPackage --show-trace
+  activateHM
+}
+
+rebuild_vm() {
+  sudo nixos-rebuild build-vm --flake .#intelTower --impure
+}
+
+restart_X() {
+  echo "⚠️ Restarting X11 (requires authentication) ⚠️"
+  systemctl restart display-manager
+}
+
+collect_ALL_garbage() {
+  sudo nix-collect-garbage -d
+  nix-collect-garbage -d
+  sudo nix-store --gc
+  echo ""
+  echo "Your royal file system is clean."
+}
+
+
+case $1 in
+  "lvm")
+    rebuild_home_lvm;;
+  "edp")
+    rebuild_home_edp;;
+  "edpEval")
+    eval_home_edp;;
+  "edptEval")
+    eval_traced_home_edp;;
+  "uhd")
+    rebuild_home_uhd;;
+  "uhdEval")
+    eval_home_uhd;;
+  "uhdtEval")
+    eval_traced_home_uhd;;
+  "restart-x")
+    restart_X;;
+  "update-fish")
+    fish -c fish_update_completions;;
+  "system")
+    rebuild_system;;  
+  "intelTower")
+    rebuild_intelTower;;
+  "intelTowerFULL")
+    rebuild_intelTower_withUpdate;;
+  "intelTowerEval")
+    eval_intelTower;;
+  "macbook")
+    rebuild_macbook;;
+  "intelNUC")
+    rebuild_intelNUC;;
+  "intelNUCFULL")  
+    rebuild_intelNUC_withUpdate;;
+  "scratchBuild")
+    rebuild_scratchBuild;;
+  "trashPanda")
+    collect_ALL_garbage;;
+  "vm")
+    rebuild_vm;;
+  *)
+    echo "expected 'lvm/edp/edpEval/edptEval' , 'uhd/uhdEval/udhtEval' , 'intelTower/intelTowerFULL/intelTowerEval/scratchBuild' , 'intelNUC/intelNUCFULL' , 'trashPanda' , , 'restart-x', 'update-fish', 'system' , 'macbook' , or 'vm'";;
+esac

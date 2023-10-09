@@ -1,0 +1,83 @@
+My Xmonad Shortcuts List
+
+
+"DarkerWarm"                                     MonBrightnessDown
+"BrighterWarm"                                   MonBrightnessUp
+"BrighterBlue"                                   mod , MonBrightnessUp
+
+"Mute"                                           AudioMute
+"Lower volume"                                   AudioLowerVolume
+"Raise volume"                                   AudioRaiseVolume
+"Lower S volume"                                 mod , AudioLowerVolume
+"Raise S volume"                                 mod , AudioRaiseVolume
+"Mute S volume"                                  mod , AudioMute
+"100% S volume"                                  mod .|. shift , AudioMute
+"Play / Pause"                                   AudioPlay
+"Stop"                                           AudioStop
+"Previous"                                       AudioPrev
+"Next"                                           AudioNext
+
+"Terminal"                                       mod .|. shift , Return
+"Bash Terminal"                                  mod .|. control , b
+"Zsh Terminal"                                   mod .|. control , z
+
+"Apps (Rofi)"                                    LaunchA
+"Calc (Rofi)"                                    mod .|. shift , c
+"Emojis (Rofi)"                                  mod .|. shift , m
+"Lock screen"                                    mod .|. control  , l
+"Next"                                           mod , space
+"SpaceInc"                                       mod , g 
+"SpaceDec"                                       mod .|. shift , g 
+"Switch Gap Index"                               mod , b 
+"Reset"                                          mod .|. shift , space
+"Fullscreen"                                     mod , f
+"Toggle Polybar"                                 mod , equal
+"Switch prompt"                                  KbdBrightnessDown
+"Audacious"                                      mod .|. control , a
+"bottom"                                         LaunchB
+"GuildView"                                      mod .|. control , g
+"Files"                                          mod .|. control , f
+"Screen recorder"                                mod .|. control , r
+"Spotify"                                        mod .|. control , s
+"Open Mpv with url from clipboard...no ads!"     mod .|. control , m
+"Gimp"                                           mod .|. control , i
+"Kodi"                                           mod .|. control , k
+"Slack"                                          mod , F2
+"Youtube"                                        mod .|. control , y
+"Home Page w/App"                                mod .|. control , a
+
+
+"Toggle status bar gap"                          mod .|. shift , b
+"Logout (quit XMonad)"                           mod .|. shift , q
+"Restart XMonad"                                 mod , q
+"Capture entire screen"                          mod , Print
+"Switch keyboard layout"                         mod , F8
+"Disable CapsLock"                               mod , F9
+"Close focused"                                  mod , BackSpace
+"Close all in ws"                                mod .|. shift , BackSpace
+"Refresh size"                                   mod , n
+"Focus next"                                     mod , j
+"Focus previous"                                 mod , k
+"Focus master"                                   mod , m
+"Swap master"                                    mod , Return
+"Swap next"                                      mod .|. shift , j
+"Swap previous"                                  mod .|. shift , k
+"Shrink master"                                  mod , h
+"Expand master"                                  mod , l
+"Switch to tile"                                 mod , t
+"Rotate slaves"                                  mod .|. shift , Tab
+"Decrease size"                                  mod , d
+"Increase size"                                  mod , s
+"Decr  abs size"                                 mod .|. shift , d
+"Incr  abs size"                                 mod .|. shift , s
+"Always Visible"                                 mod , v
+"Kill Copies"                                    mod .|. shift , v
+"Next"                                           mod , period
+"Previous"                                       mod , comma
+"Remove"                                         mod , Eject
+
+"Switch to workspace N"                          mod-[1..9]:  | 
+"Move client to workspace N"                     mod-shift-[1..9]: 
+"Copy window to workspace N"                     mod-shift-ctrl-[1..9]: 
+"Switch to physical/Xinerama screens 1, 2, or 3" mod-{w,e,r}, 
+"Move client to screen 1, 2, or 3"               mod-shift-{w,e,r} 
